@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Séance ATG — Genoux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --court-black: #14181A;
+    --panel: #1D2420;
+    --panel-line: #2C352F;
+    --hardwood: #C1793D;
+    --hardwood-dim: #8A5A2E;
+    --chalk: #F0ECE2;
+    --sage: #93A091;
+    --tape-red: #C05A45;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--court-black);
+    color:var(--chalk);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{font-family:'Oswald', sans-serif; text-transform:uppercase;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* background texture: faint hardwood plank lines */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image: repeating-linear-gradient(180deg, rgba(193,121,61,0.035) 0px, rgba(193,121,61,0.035) 1px, transparent 1px, transparent 64px);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+
+  /* ---------- HERO ---------- */
+  header.hero{padding:56px 0 32px; border-bottom:1px solid var(--panel-line);}
+  .eyebrow{
+    color:var(--hardwood); font-family:'IBM Plex Mono', monospace;
+    font-size:13px; letter-spacing:0.18em; text-transform:uppercase;
+    margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--hardwood);}
+  h1{
+    font-size:clamp(38px, 7vw, 62px);
+    line-height:0.98;
+    font-weight:700;
+    letter-spacing:0.005em;
+    color:var(--chalk);
+  }
+  h1 span{color:var(--hardwood);}
+  .subtitle{
+    margin-top:16px; max-width:46ch; color:var(--sage); font-size:16px;
+  }
+
+  /* angle sweep hero graphic */
+  .angle-hero{
+    margin-top:40px; display:flex; align-items:flex-end; gap:32px; flex-wrap:wrap;
+  }
+  .angle-svg{flex-shrink:0;}
+  .angle-caption{max-width:280px;}
+  .angle-caption .num{
+    font-family:'Oswald', sans-serif; font-size:15px; letter-spacing:0.08em;
+    color:var(--hardwood); text-transform:uppercase; margin-bottom:6px;
+  }
+  .angle-caption p{color:var(--sage); font-size:14px;}
+  .sweep-line{
+    stroke:var(--hardwood); stroke-width:2; fill:none;
+    stroke-dasharray:200; stroke-dashoffset:200;
+    animation: draw 1.4s ease-out 0.3s forwards;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .sweep-line{animation:none; stroke-dashoffset:0;}
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  /* ---------- SECTION DIVIDER (signature motif) ---------- */
+  .angle-divider{
+    display:flex; align-items:center; gap:14px;
+    margin:56px 0 28px;
+    color:var(--hardwood-dim);
+  }
+  .angle-divider .deg{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    color:var(--hardwood); white-space:nowrap;
+  }
+  .angle-divider svg{flex-shrink:0;}
+  .angle-divider .rule{flex:1; height:1px; background:var(--panel-line);}
+
+  section.block{padding-bottom:8px;}
+  .block-title{
+    font-size:22px; font-weight:600; letter-spacing:0.01em; color:var(--chalk);
+    margin-bottom:4px;
+  }
+  .block-note{color:var(--sage); font-size:14px; margin-bottom:22px; max-width:52ch;}
+
+  /* ---------- EXERCISE CARDS ---------- */
+  .ex-list{list-style:none; display:flex; flex-direction:column; gap:2px;}
+  .ex{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:2px;
+    padding:20px 22px;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    gap:18px;
+    align-items:start;
+    transition:border-color 0.2s ease;
+  }
+  .ex:hover{border-color:var(--hardwood-dim);}
+  .ex-num{
+    font-family:'Oswald', sans-serif; font-size:28px; font-weight:600;
+    color:var(--hardwood-dim); line-height:1;
+    min-width:34px;
+  }
+  .warmup .ex-num{color:var(--hardwood);}
+  .ex-body h3{
+    font-family:'Oswald', sans-serif; font-size:19px; font-weight:500;
+    letter-spacing:0.01em; text-transform:uppercase; color:var(--chalk);
+    margin-bottom:6px;
+  }
+  .ex-body p{font-size:14px; color:var(--sage); max-width:48ch;}
+  .ex-meta{
+    text-align:right; white-space:nowrap;
+  }
+  .ex-sets{
+    font-family:'IBM Plex Mono', monospace; font-size:14px; color:var(--hardwood);
+    margin-bottom:8px;
+  }
+  .load-dots{display:flex; gap:4px; justify-content:flex-end;}
+  .load-dots span{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--panel-line);
+  }
+  .load-dots span.on{background:var(--hardwood);}
+  .load-label{font-size:10px; color:var(--sage); letter-spacing:0.08em; text-transform:uppercase; margin-top:6px;}
+
+  @media (max-width:560px){
+    .ex{grid-template-columns:auto 1fr; }
+    .ex-meta{grid-column:1/-1; text-align:left; margin-top:10px;
+      display:flex; align-items:center; gap:14px;}
+    .load-dots{justify-content:flex-start;}
+  }
+
+  /* ---------- FOOTER NOTE ---------- */
+  .caution{
+    margin:48px 0 24px;
+    border-left:2px solid var(--tape-red);
+    padding:14px 18px;
+    background:rgba(192,90,69,0.06);
+    font-size:14px;
+    color:var(--chalk);
+  }
+  .caution strong{color:var(--tape-red); font-weight:600;}
+
+  .mantra{
+    text-align:center;
+    padding:56px 0 64px;
+  }
+  .mantra p{
+    font-family:'Oswald', sans-serif;
+    font-size:clamp(20px, 4vw, 30px);
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:var(--chalk);
+  }
+  .mantra p span{color:var(--hardwood);}
+  .mantra .src{
+    margin-top:10px; font-family:'IBM Plex Mono', monospace; font-size:12px;
+    color:var(--sage); letter-spacing:0.06em;
+  }
+
+  a:focus-visible, .ex:focus-visible{
+    outline:2px solid var(--hardwood); outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Séance <span>ATG</span><br>Knees over toes</h1>
+  </header>
+
+  <!-- WARM UP -->
+  <section class="block" style="margin-top:44px;">
+    <div class="block-title">Échauffement</div>
+    <div class="block-note">5 à 10 minutes pour monter en température et réveiller les tibiaux, sans charge excentrique forte.</div>
+    <ul class="ex-list">
+      <li class="ex warmup">
+        <div class="ex-num">W</div>
+        <div class="ex-body">
+          <h3>Marche arrière / Sled</h3>
+          <p>Marche arrière simple ou traîneau léger. Poser l'avant-pied, petits pas, dos droit.</p>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">5–10 min</div>
+          <div class="load-dots" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+          <div class="load-label">Intensité genou</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <div class="angle-divider" aria-hidden="true">
+    <span class="deg">01 — 06</span>
+    <svg width="28" height="14" viewBox="0 0 28 14"><path d="M2 12 L26 2" stroke="#8A5A2E" stroke-width="1.5"/></svg>
+    <div class="rule"></div>
+  </div>
+
+  <!-- MAIN SESSION -->
+  <section class="block">
+    <div class="block-title">Corps de séance</div>
+    <div class="block-note">Ordre pensé pour aller du plus léger au plus exigeant, puis retour au calme.</div>
+
+    <ul class="ex-list">
+      <li class="ex">
+        <div class="ex-num">1</div>
+        <div class="ex-body">
+          <h3>Tib Raises</h3>
+          <p>Dos contre un mur, on relève la pointe du pied. Réveille le tibial antérieur avant de charger le genou.</p>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3 × 15–20</div>
+          <div class="load-dots" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+          <div class="load-label">Intensité genou</div>
+        </div>
+      </li>
+
+      <li class="ex">
+        <div class="ex-num">2</div>
+        <div class="ex-body">
+          <h3>Patrick Step</h3>
+          <p>Sur un step, descente contrôlée jusqu'à effleurer le sol du talon. Excentrique doux, prépare le tendon rotulien.</p>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3 × 8–10 / jambe</div>
+          <div class="load-dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+          <div class="load-label">Intensité genou</div>
+        </div>
+      </li>
+
+      <li class="ex">
+        <div class="ex-num">3</div>
+        <div class="ex-body">
+          <h3>ATG Split Squat</h3>
+          <p>Fente arrière surélevée, descente contrôlée. Le genou avant peut dépasser les orteils — c'est le principe de la méthode.</p>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3 × 8 / jambe</div>
+          <div class="load-dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+          <div class="load-label">Intensité genou</div>
+        </div>
+      </li>
+
+      <li class="ex">
+        <div class="ex-num">4</div>
+        <div class="ex-body">
+          <h3>Copenhagen Plank</h3>
+          <p>Renforce les adducteurs, très sollicités dans les changements de direction. Commencer genou fléchi avant la version jambe tendue.</p>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3 × 20–30s / côté</div>
+          <div class="load-dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+          <div class="load-label">Intensité genou</div>
+        </div>
+      </li>
+
+      <li class="ex">
+        <div class="ex-num">5</div>
+        <div class="ex-body">
+          <h3>Hip Flexor Raise assis</h3>
+          <p>Position assise, jambe tendue relevée. Stabilise le bassin, utile pour la course et le saut.</p>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3 × 10 / jambe</div>
+          <div class="load-dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+          <div class="load-label">Intensité genou</div>
+        </div>
+      </li>
+
+      <li class="ex">
+        <div class="ex-num">6</div>
+        <div class="ex-body">
+          <h3>Couch Stretch</h3>
+          <p>Genou arrière au sol contre un mur. Récupère l'amplitude du quadriceps et du psoas en fin de séance.</p>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">30–45s / jambe</div>
+          <div class="load-dots" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+          <div class="load-label">Intensité genou</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <div class="mantra">
+    <p>Patience <span>over</span> ego</p>
+    <div class="src">— Ben Patrick, Athletic Truth Group</div>
+  </div>
+
+</div>
+
+</body>
+</html>
